@@ -1,0 +1,3 @@
+SeoPage:
+  columns:
+    url:    string(255)
