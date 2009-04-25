@@ -11,8 +11,8 @@ class SeoPurifier
   
   protected function __construct()
   {
-    set_include_path(sfConfig::get('sf_lib_dir') . '/vendor' . PATH_SEPARATOR . get_include_path());
-    require_once sfConfig::get('sf_lib_dir').'/vendor/htmlpurifier/library/HTMLPurifier.includes.php';
+    // set_include_path(sfConfig::get('sf_lib_dir') . '/vendor' . PATH_SEPARATOR . get_include_path());
+    require_once dirname(__FILE__).'/../vendor/htmlpurifier/HTMLPurifier.includes.php';
     $this->config = HTMLPurifier_Config::createDefault();
     $this->config->set('Cache', 'SerializerPath', sfConfig::get('sf_cache_dir'));
     $this->config->set('HTML', 'Trusted', true);
@@ -44,4 +44,5 @@ class SeoPurifier
   public function __wakeup() {
     throw new sfException('Deserializing is not allowed.');
   }
+
 }

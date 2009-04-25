@@ -4,10 +4,10 @@
  */
 class PluginSeoPageTable extends Doctrine_Table
 {
-	public function createQuery($alias = '')
-	{
-		return parent::createQuery($alias)
-									->innerJoin($alias.'.MetaData m')
-									->innerJoin($alias.'.SitemapItem s');
-	}
+	// public function createQuery($alias = '')
+	// {
+	// 	return parent::createQuery($alias)
+	// 								->innerJoin($alias.'.MetaData m')
+	// 								->innerJoin($alias.'.SitemapItem s');
+	// }
 }

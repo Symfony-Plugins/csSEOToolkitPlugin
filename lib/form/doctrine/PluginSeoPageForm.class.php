@@ -12,14 +12,20 @@ abstract class PluginSeoPageForm extends BaseSeoPageForm
 	public function setUp()
 	{
 		parent::setUp();
-		$this->widgetSchema['url'] = new sfWidgetFormInputHidden();
-		
-		$metadata = new MetaDataForm($this->getObject()->getMetaData());
-		$sitemap = new SitemapItemForm($this->getObject()->getSitemapItem());
-		
-		unset($this['url'], $sitemap['id'], $sitemap['seo_page_id'], $metadata['id'], $metadata['seo_page_id']);
-		
-		$this->embedForm('SitemapItem', $sitemap);
-		$this->embedForm('MetaData', $metadata);
+		$this->hideField('url');
+		$this->widgetSchema['title'] = new sfWidgetFormInput(array(), array('size' => 40));
+		$this->widgetSchema['description'] = new sfWidgetFormTextarea(array(), array('cols' => 38));
+		$this->widgetSchema['keywords'] = new sfWidgetFormInput(array(), array('size' => 40));
+	}
+	public function hideField($field)
+	{
+		$this->widgetSchema[$field] = new sfWidgetFormInputHidden();
+	}
+	public function hideFields($fields = array())
+	{
+		foreach ($fields as $field) 
+		{
+			$this->hideField($field);
+		}
 	}
 }

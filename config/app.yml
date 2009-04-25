@@ -1,0 +1,5 @@
+all:
+  csSEOToolkitPlugin:
+    AuthMethod:       isAuthenticated
+    SitePrefix:       off               #Override this with your site prefix (ex: "Mysite | ")
+    IncludeAssets:    on                #includes default css/javascript for your admin bar

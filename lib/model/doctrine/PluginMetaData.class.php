@@ -42,7 +42,7 @@ abstract class PluginMetaData extends BaseMetaData
 			}
 		}
 		$title = trim(strip_tags($title));
-		return substr($title ? 'Vaco  |  ' . $title : self::getDefaultTitle($request), 0, 255);
+		return substr($title ? sfConfig::get('app_csSEOToolkitPlugin_SitePrefix') . $title : self::getDefaultTitle($request), 0, 255);
 	}
 	private static function getDefaultTitle($request)
 	{
