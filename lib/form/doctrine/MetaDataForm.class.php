@@ -7,12 +7,12 @@
  * @subpackage MetaData
  * @version    SVN: $Id: sfDoctrineFormTemplate.php 6174 2007-11-27 06:22:40Z fabien $
  */
-abstract class PluginMetaDataForm extends PluginSeoPageForm
+class MetaDataForm extends PluginSeoPageForm
 {
 	public function setUp()
 	{
 		parent::setUp();
 		unset($this['created_at'], $this['updated_at']);
-		$this->hideFields(array('priority', 'changeFreq'));
+		$this->hideFields(array('priority', 'changeFreq', 'exclude_from_sitemap'));
 	}
 }

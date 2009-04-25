@@ -1,0 +1,24 @@
+/* @group Admin Bar for meta data */
+#admin_bar {
+display:block;
+position:absolute;
+z-index:1001;
+padding:20px 0 20px 20px;
+background-color:#CCC;
+}
+#admin_bar li
+{
+	float:left;
+	list-style-type:none;
+	padding-right:20px;
+}
+#admin_bar a
+{
+color:#444;
+}
+#admin_bar input, #admin_bar textarea, #admin_bar select 
+{
+display:block;
+}
+
+/* @End*/

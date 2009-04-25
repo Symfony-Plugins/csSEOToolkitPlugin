@@ -13,7 +13,7 @@ abstract class PluginSeoPage extends BaseSeoPage
 	
 	public static function generateMetaData($content, $request)
 	{
-		$meta = new MetaData();
+		$meta = new SeoPage();
 		$meta->setUrl($request->getUri());
 		$meta->setTitle(self::parseTitle($content, $request));
 		$meta->setDescription(self::parseDescription($content));
@@ -64,7 +64,7 @@ abstract class PluginSeoPage extends BaseSeoPage
 	{
 		$words = explode(' ', self::stripPunctuation(strip_tags($content)));
 		array_walk($words, 'trim');
-		$words = array_filter($words, 'MetaData::filterLength');
+		$words = array_filter($words, 'SeoPage::filterLength');
 		$weight = array();
 		foreach ($words as $word) 
 		{
