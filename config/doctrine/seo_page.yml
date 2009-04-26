@@ -5,9 +5,6 @@ SeoPage:
     title:  string(255)
     description:  clob
     keywords:   string(255)
-    underride_meta_data:
-      type:     boolean
-      default:  false
     priority:    
       type:         decimal
       default:      .5

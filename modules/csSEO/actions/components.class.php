@@ -5,9 +5,8 @@ class csSEOComponents extends sfComponents
 	public function executeMetas(sfWebRequest $request)
 	{
 		$this->include_admin_bar = false;
-		$this->page = $this->getCurrentSeoPage($request);
+		$this->page = SeoToolkit::getCurrentSeoPage($request);
 		$this->metas = $this->getMetas($this->page, sfContext::getInstance());
-
 		if ($this->page && $this->validatedUser()) 
 		{
 			$this->include_admin_bar = true;
@@ -17,15 +16,16 @@ class csSEOComponents extends sfComponents
 	{
  		$i18n = sfConfig::get('sf_i18n') ? $context->getI18N() : null;
 		$metatags = array();
-		$metanames = array_merge($context->getResponse()->getMetas(), array('description' => 'description', 'keywords' => 'keywords'));
+		$metanames = array_merge(array('description' => null, 'keywords' => null), $context->getResponse()->getMetas());
 		foreach ($metanames as $name => $content)
  		{	
-			if(isset($page[$name]))
+			if(isset($page[$name]) && $page[$name])
 			{
 				$content = $page[$name];
 			}
    		$metatags[] = tag('meta', array('name' => $name, 'content' => is_null($i18n) ? $content : $i18n->__($content)))."\n";
  		}
+		$this->title = $page['title'] ? $page['title'] : $context->getResponse()->getTitle();
 		return $metatags;
 	}
 	public function executeMeta_data(sfWebRequest $request)
@@ -55,21 +55,23 @@ class csSEOComponents extends sfComponents
 
 		if (!isset($this->page)) 
 		{
-			$this->page = $this->getCurrentSeoPage($request);
+			$this->page = SeoToolkit::getCurrentSeoPage($request);
 		}
 		$this->metaform = new MetaDataForm($this->page);
 		$this->sitemapform = new SitemapItemForm($this->page);
 	}
-	public function getCurrentSeoPage(sfWebRequest $request)
-	{
-		$url = $request->getUri();
-		return Doctrine::getTable('SeoPage')->findOneByUrl($url);
-	}
+	/**
+	 * validatedUser
+	 * calls AuthMethod method on the application's User class.  If no method is specified, returns true
+	 *
+	 * @return void
+	 * @author Brent Shaffer
+	 */
 	public function validatedUser()
 	{
 		$user = sfContext::getInstance()->getUser();
-		$authmethod = sfConfig::get('app_csSEOToolkitPlugin_AuthMethod', 'isAuthenticated');
-		return $user->$authmethod();
+		$authmethod = sfConfig::get('app_csSEOToolkitPlugin_AuthMethod');
+		return $authmethod ? $user->$authmethod() : true;
 	}
 	public function includeAdminBarAssets(sfWebRequest $request)
 	{

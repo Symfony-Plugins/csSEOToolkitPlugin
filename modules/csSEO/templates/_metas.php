@@ -3,7 +3,7 @@
 	<?php foreach ($metas as $data): ?>
 		<?php echo $data ?>
 	<?php endforeach ?>
-	<title><?php echo $page['title'] ?></title>
+	<title><?php echo $title ?></title>
 	
 	<?php if ($include_admin_bar): ?>
 		<?php slot('seo_admin_bar') ?>

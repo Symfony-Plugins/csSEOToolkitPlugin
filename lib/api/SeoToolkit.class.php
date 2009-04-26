@@ -26,11 +26,12 @@ class SeoToolkit
 	 */
 	public static function generateMetaData($content, $request)
 	{
+		$underride = sfConfig::get('app_csSEOToolkitPlugin_Underride');
 		$meta = new SeoPage();
 		$meta->setUrl($request->getUri());
-		$meta->setTitle(self::parseTitle($content));
-		$meta->setDescription(self::parseDescription($content));
-		$meta->setKeywords(self::parseKeywords($content));
+		$meta->title = $underride['Title'] ? null : self::parseTitle($content);
+		$meta->description = $underride['Description'] ? null : self::parseDescription($content);
+		$meta->keywords = $underride['Keywords'] ? null : self::parseKeywords($content);
 		$meta->save();
 		return $meta;
 	}
@@ -42,7 +43,7 @@ class SeoToolkit
 	 * @return string page title
 	 * @author Brent Shaffer
 	 */
-	private static function parseTitle($content, $request)
+	private static function parseTitle($content)
 	{
 		$title = '';
 		foreach (self::$_split_tags['title'] as $open => $close) 
@@ -67,7 +68,15 @@ class SeoToolkit
 	//This can be extended / overriden on a per-site basis
 	public static function getDefaultTitle()
 	{
-		return 'Home';
+		if ($method = sfConfig::get('app_csSEOToolkitPlugin_DefaultTitleMethod')) 
+		{
+			return SeoPageTable::$method();
+		}
+		if($title = sfConfig::get('app_csSEOToolkitPlugin_DefaultTitle'))
+		{
+			return self::getSitePrefix() . $title;
+		}
+		return null;
 	}
 	/**
 	 * creates a meta description from a block of HTML
@@ -124,10 +133,10 @@ class SeoToolkit
 	private static function prepForKeywords($text)
 	{
 		//keywords are not case sensitive, we don't want to include HTML tags
-		$text = strtolower(strip_tags($text);
+		$text = strtolower(strip_tags($text));
 		
 		//We want to strip all punctuation
-		$text = preg_replace('/\W/', ' ', $text));
+		$text = preg_replace('/\W/', ' ', $text);
 		
 		//create the array
 		$words = explode(' ', $text);
@@ -165,7 +174,12 @@ class SeoToolkit
 	{
 		return strlen($text) >= self::$_wordlen;
 	}
-	
+	static public function getCurrentSeoPage($request = null)
+	{
+		$request = $request ? $request : sfContext::getInstance()->getRequest();
+		$url = $request->getUri();
+		return Doctrine::getTable('SeoPage')->findOneByUrl($url);
+	}
 	static public function xmlencode($tag)
 	{
 	 $tag = str_replace("&", "&amp;", $tag);
