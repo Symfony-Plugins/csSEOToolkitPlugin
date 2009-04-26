@@ -47,11 +47,12 @@ class csSEOActions extends sfActions
     $this->getResponse()->setHttpHeader('Content-type','text/xml');
 		return 'XML';
 	}
-	public function executeError404($value='')
+	public function executeError404(sfWebRequest $request)
 	{
 		$this->search = preg_split ("/\/|-/", $request->getPathInfo());
-		$query = Doctrine::getTable('SEOPage')
-								->getSearchQuery($this->search)->limit(10);
+		$query = Doctrine::getTable('SeoPage')
+								->getSearchQuery(array_filter($this->search))
+								->limit(10);
 								
 		$this->results = $query->execute();
 		

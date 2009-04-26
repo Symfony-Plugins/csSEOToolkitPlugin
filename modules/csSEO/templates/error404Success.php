@@ -13,10 +13,10 @@
 		<?php foreach ($results as $result): ?>
 			<div class='joblisting'> 	
 				<h2>
-					<?php echo link_to($result['title'], $result['route']) ?>
+					<?php echo link_to($result['title'], $result['url']) ?>
 				</h2>
 				<div class='textwrap'>
-					<?php echo $result['teaser'] ?>
+					<?php echo $result['description'] ?>
 				</div>
 			</div>
 		<?php endforeach ?>	

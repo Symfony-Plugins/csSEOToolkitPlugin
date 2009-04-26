@@ -31,7 +31,11 @@ class csSEOComponents extends sfComponents
 	public function executeMeta_data(sfWebRequest $request)
 	{
 		$this->sf_request = $request;
-		$this->sf_content = sfContext::getInstance()->getResponse()->getContent();
+		$this->sf_response = sfContext::getInstance()->getResponse();
+		if (!isset($this->sf_content))
+		{
+			throw new sfException("Must include \$sf_content when generating meta data");
+		} 
 	}
 	/**
 	 * executeMeta_data_admin_bar

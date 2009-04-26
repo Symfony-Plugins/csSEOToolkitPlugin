@@ -6,9 +6,9 @@ function keyword_encode($content, $selector = null)
 	return SeoKeywordToolkit::getInstance()->parseBlock($content, $selector);
 }
 
-function include_seo_metas()
+function include_seo_metas($content)
 {
-	echo get_component('csSEO', 'meta_data', array());
+	echo get_component('csSEO', 'meta_data', array('sf_content' => $content));
 }
 
 function seo_admin_bar()
