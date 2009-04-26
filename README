@@ -133,3 +133,14 @@ To implement the custom 404 module in your website, add the following code to yo
 That is all!  If you have a preferred algorithm for searching, override the module or write your own **getSearchQuery()** method for the SeoPageTable class.  
 
 *SeoPageTable*->**getSearchQuery()** accepts a single argument: an array of keywords to search. 	
+
+Tasks
+-----
+
+csSEOPlugin currently supports two tasks:
+
+ * remove-404
+ * rebuild-metas
+
+the *remove-404* task checks all the pages stored in your database, and flags those returning a 404 status code.  The titles and ids are displayed on the command line.  You can then confirm to remove these entries from the database.
+the *rebuild-metas* task uses your current app.yml settings for meta generation and runs this process across all the pages in your database.
