@@ -5,5 +5,9 @@
  */
 abstract class PluginSeoPage extends BaseSeoPage
 {
-
+	public function getAbsoluteUrl()
+	{
+		sfProjectConfiguration::getActive()->loadHelpers(array('Asset', 'Tag', 'Url'));
+		return url_for(public_path($this['url']), 'absolute=true');
+	}
 }

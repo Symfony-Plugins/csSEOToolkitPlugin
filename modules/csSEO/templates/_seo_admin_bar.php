@@ -1,11 +1,25 @@
 <script>
+	function hideMetaData(meta_form, e)
+	{
+		var sitemap_form = meta_form ? meta_form : document.getElementById('meta_form');
+		var link = e ? e : document.getElementById('meta_link');
+		sitemap_form.style.display = 'none'; 
+		link.innerHTML = 'Edit Metadata';	
+	}
+	function hideSitemapData(sitemap_form, e)
+	{
+		var sitemap_form = document.getElementById('sitemap_form');
+		var link = document.getElementById('sitemap_link');
+		sitemap_form.style.display = 'none'; 
+		link.innerHTML = 'Edit Sitemap Data';	
+	}
 	function toggleMetaData(e)
 	{
+		hideSitemapData();
 		var meta_form = document.getElementById('meta_form');
 		if(meta_form.style.display == 'block')
 		{
-			meta_form.style.display = 'none'; 
-			e.innerHTML = 'Edit Metadata';
+			hideMetaData(meta_form, e)
 		}
 		else
 		{
@@ -15,24 +29,35 @@
 	}
 	function toggleSitemapData(e)
 	{
+		hideMetaData();
 		var sitemap_form = document.getElementById('sitemap_form');
 		if(sitemap_form.style.display == 'block')
 		{
-			sitemap_form.style.display = 'none'; 
-			e.innerHTML = 'Edit Sitemap Data';
+			hideSitemapData(sitemap_form, e);
 		}
 		else
 		{
 			sitemap_form.style.display = 'block'; 
-			e.innerHTML = 'Edit Sitemap Data';
+			e.innerHTML = 'Hide Sitemap Data';
 		}
 	}
 	
 </script>
-<ul id='admin_bar'>
+<ul id='seo_admin_bar'>
+	<?php if (isset($metaform)): ?>
+	<li class='metadata'>
+		<a id="meta_link" href="#" onclick="toggleMetaData(this)">Edit Metadata</a>
+	</li>
+	<?php endif ?>
+	<?php if (isset($sitemapform)): ?>
+	<li class='sitemap'>
+		<a id="sitemap_link" href="#" onclick="toggleSitemapData(this)">Edit Sitemap Data</a>
+	</li>
+	<?php endif ?>
+</ul>
+<ul id='seo_admin_forms'>
 	<?php if (isset($metaform)): ?>
 	<li>
-		<a href="#" onclick="toggleMetaData(this)">Edit Metadata</a>
 		<div id='meta_form' style='display:none'>
 			<?php use_helper('Form') ?>
 			<?php echo form_tag('@meta_data_edit') ?>
@@ -44,7 +69,6 @@
 	<?php endif ?>
 	<?php if (isset($sitemapform)): ?>
 	<li>
-		<a href="#" onclick="toggleSitemapData(this)">Edit Sitemap Data</a>
 		<div id='sitemap_form' style='display:none'>
 			<?php use_helper('Form') ?>
 			<?php echo form_tag('@sitemap_xml_edit') ?>

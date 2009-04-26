@@ -28,12 +28,38 @@ class SeoToolkit
 	{
 		$underride = sfConfig::get('app_csSEOToolkitPlugin_Underride');
 		$meta = new SeoPage();
-		$meta->setUrl($request->getUri());
+		$meta->setUrl(self::parseUrl($request));
 		$meta->title = $underride['Title'] ? null : self::parseTitle($content);
 		$meta->description = $underride['Description'] ? null : self::parseDescription($content);
 		$meta->keywords = $underride['Keywords'] ? null : self::parseKeywords($content);
 		$meta->save();
 		return $meta;
+	}
+	/**
+	 * getCurrentSeoPage
+	 * Used to pull current page from web request.  Standard across all actions, components, and models 
+	 *
+	 * @param string $request 
+	 * @return void
+	 * @author Brent Shaffer
+	 */
+	static public function getCurrentSeoPage($request = null)
+	{
+		$request = $request ? $request : sfContext::getInstance()->getRequest();
+		$url = self::parseUrl($request);
+		return Doctrine::getTable('SeoPage')->findOneByUrl($url);
+	}
+	/**
+	 * parseUrl
+	 * used to determine the url for the SeoPage from the given request
+	 * 
+	 * @param string $request 
+	 * @return void
+	 * @author Brent Shaffer
+	 */
+	private static function parseUrl($request)
+	{
+		return $request->getPathInfo();
 	}
 	/**
 	 * parseTitle
@@ -173,12 +199,6 @@ class SeoToolkit
 	private static function filterLength($text)
 	{
 		return strlen($text) >= self::$_wordlen;
-	}
-	static public function getCurrentSeoPage($request = null)
-	{
-		$request = $request ? $request : sfContext::getInstance()->getRequest();
-		$url = $request->getUri();
-		return Doctrine::getTable('SeoPage')->findOneByUrl($url);
 	}
 	static public function xmlencode($tag)
 	{
