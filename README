@@ -10,7 +10,7 @@ Provides you with several tools to optimize your website for search engines
 
 Installation
 ------------
-After installing the plugin, remember to run the task "./symfony plugin:publish-asset" to include the associated styles, scripts and images
+After installing the plugin, remember to run the task "./symfony plugin:publish-asset" to include the associated styles, scripts and images.
 Secondly, include the csSEO module in your application via your *included_modules* setting in settings.yml
 
 MetaData
@@ -64,10 +64,10 @@ Underriding allows your site to ONLY use database-driven metadata when specifica
 	[yml]
 	all:
 	csSEOToolkitPlugin:
-    Underride:
-      Title:           on                #If on, titles are not auto-generated
-      Description:     off               #If on, descriptions are not auto-generated
-      Keywords:        on                #If on, keywords are not auto-generated
+		Underride:
+			Title:           on                #If on, titles are not auto-generated
+			Description:     off               #If on, descriptions are not auto-generated
+			Keywords:        on                #If on, keywords are not auto-generated
 
 In the above example, meta descriptions are auto generated, but titles and keywords are not.
 
@@ -127,8 +127,8 @@ To implement the custom 404 module in your website, add the following code to yo
 	[yml]
 	all:
 		.settings:
-	    error_404_module:       csSEO
-	    error_404_action:       error404
+			error_404_module:       csSEO
+			error_404_action:       error404
 
 That is all!  If you have a preferred algorithm for searching, override the module or write your own **getSearchQuery()** method for the SeoPageTable class.  
 
