@@ -42,7 +42,7 @@ class csSEOActions extends sfActions
   // ===========
 	public function executeSitemap(sfWebRequest $request)
 	{
-		$this->items = Doctrine::getTable('SeoPage')->findAll();
+		$this->items = Doctrine::getTable('SeoPage')->findByExcludeFromSitemap(false);
 		$this->setLayout(false);
     $this->getResponse()->setHttpHeader('Content-type','text/xml');
 		return 'XML';
