@@ -13,14 +13,17 @@ class SeoTestFunctional extends sfTestFunctional
 	{
 		$this->url = $url;
 	}
-	public function isValidUrl()
+	public function getStatusCode()
 	{
 		if ($page = $this->get($this->url)) 
 		{
-			$status = $this->getWebResponseObject()->getStatusCode();
-			return $status != 404 ? true : false;
+			return $this->getWebResponseObject()->getStatusCode();
 		}
-		return false;
+		return 404;
+	}
+	public function isStatusCode($code)
+	{
+		return ($this->getStatusCode() == $code);		
 	}
 	public function get($uri, $parameters = array(), $changeStack = true)
 	{

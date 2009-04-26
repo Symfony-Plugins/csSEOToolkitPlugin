@@ -43,7 +43,7 @@ EOF;
 		foreach ($pages as $page) 
 		{
 			$browser->loadUrl($page['url']);
-			if(!$browser->isValidUrl())
+			if($browser->isStatusCode(404))
 			{
 				$missingPages[] = $page;
 

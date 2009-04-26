@@ -1,6 +1,6 @@
 <?php
 
-class seoGenerateMetasTask extends seoBaseTask
+class seoRebuildMetasTask extends seoBaseTask
 {
   protected function configure()
   {
@@ -20,7 +20,10 @@ class seoGenerateMetasTask extends seoBaseTask
     $this->briefDescription = 'rebuilds metas across the site, using configurations set in app.yml';
     $this->detailedDescription = <<<EOF
 This task rebuilds your SEO metadata across the entire site, using the urls available.
-It requires an application argument.
+It requires an application argument.  
+
+A SQL WHERE clause can be passed using the [where|INFO] option to limit the query to a certain group of objects.  A single SeoPage id can also be passed. 
+[You must use "is" instead of an equals sign.|COMMENT]
 EOF;
   }
 
@@ -61,7 +64,7 @@ EOF;
 		foreach ($pages as $page) 
 		{
 			$browser->loadUrl($page['url']);
-			if($browser->isValidUrl($page['url']))
+			if($browser->isStatusCode(200))
 			{
 				$new = SeoToolkit::createMetaData($browser->getContent());
 				if ($page['title'] != $new['title'] || $page['description'] != $new['description'] || $page['keywords'] != $new['keywords']) 
@@ -101,6 +104,7 @@ EOF;
 		}
 		if ($num_miss) 
 		{
+			$this->logSection('seo', 'Missing Pages Found',null, 'ERROR');
 			$this->removePages($missing, $options);
 		}
 		$this->logSection('seo', 'Task Complete');

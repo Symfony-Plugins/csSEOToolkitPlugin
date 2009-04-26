@@ -43,7 +43,8 @@
 	}
 	
 </script>
-<ul id='seo_admin_bar'>
+<div id='seo_admin_bar'>
+<ul id='seo_admin_buttons'>
 	<?php if (isset($metaform)): ?>
 	<li class='metadata'>
 		<a id="meta_link" href="#" onclick="toggleMetaData(this)">Edit Metadata</a>
@@ -89,3 +90,4 @@
 	</li>
 	<?php endif; ?>
 </ul>
+</div>

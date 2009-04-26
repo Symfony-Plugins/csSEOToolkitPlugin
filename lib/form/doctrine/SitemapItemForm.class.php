@@ -14,6 +14,7 @@ class SitemapItemForm extends PluginSeoPageForm
 		parent::setUp();
 		unset($this['created_at'], $this['updated_at']);
 		$this->hideFields(array('title', 'description', 'keywords'));
+		$this->setValue('priority', number_format($this->getObject()->getPriority(), 1));
 		$this->widgetSchema['priority'] = new sfWidgetFormInput(array(), array('class' => 'value_display', 'onfocus' => 'blur(this);', 'id' => 'priority_slider'));
 		$this->widgetSchema->setLabel('priority', false);
 	}

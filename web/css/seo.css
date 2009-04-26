@@ -1,5 +1,6 @@
 /* @group Admin Bar for meta data */
-#seo_admin_bar {
+#seo_admin_bar
+{
 	background-color:#CCCCCC;
 	display:block;
 	left:0;
@@ -11,17 +12,12 @@
 	opacity:.95;
 	font-size:12px;
 }
-#seo_admin_forms
+#seo_admin_bar ul
 {
-	position:absolute;
-	background-color:#CCCCCC;
-	opacity:.95;
-	font-size:12px;
-	display:block;
 	margin:0;
-	left:0;
-	padding-left:20px;
+	padding:0;
 }
+
 #seo_admin_forms li
 {
 	margin:0;
@@ -33,7 +29,7 @@
 {
 	padding-bottom:20px;
 }
-#seo_admin_bar li
+#seo_admin_buttons li
 {
 	float:left;
 	list-style-type:none;
@@ -41,15 +37,15 @@
 	margin-right:10px;
 	background: transparent none no-repeat right center;
 }
-#seo_admin_bar li.sitemap
+#seo_admin_buttons li.sitemap
 {
 	background-image:url(../images/sitemap.gif);
 }
-#seo_admin_bar li.metadata
+#seo_admin_buttons li.metadata
 {
 	background-image:url(../images/metadata.gif);
 }
-#seo_admin_bar a
+#seo_admin_buttons a
 {
 color:#444;
 }
