@@ -71,9 +71,10 @@
 	<?php if (isset($sitemapform)): ?>
 	<li>
 		<div id='sitemap_form' style='display:none'>
+			<hr />
 			<?php use_helper('Form') ?>
 			<?php echo form_tag('@sitemap_xml_edit') ?>
-			Priority:<br />
+			<label style='clear:both;float:left'>Priority:</label>
 			<div class="horizontal_track" >
 	    	<div class="horizontal_slit" >&nbsp;</div>
 	    	<div class="horizontal_slider"
@@ -83,7 +84,10 @@
 	        'horizontal', 100, 0, 1, 101,
 	        1, 'priority_slider');" >&nbsp;</div>
 			</div>
-			<?php echo $sitemapform ?>
+			<?php echo $sitemapform['priority']->renderRow() ?>
+			<?php echo $sitemapform['changeFreq']->renderRow() ?>
+			<?php echo $sitemapform['exclude_from_sitemap'] ?>
+			<?php echo $sitemapform['exclude_from_sitemap']->renderLabel() ?>
 			<?php echo submit_tag('Submit') ?>
 			</form>
 		</div>
