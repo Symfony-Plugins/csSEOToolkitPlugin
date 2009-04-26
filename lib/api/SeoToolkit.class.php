@@ -24,10 +24,11 @@ class SeoToolkit
 	 * @return SeoPage object
 	 * @author Brent Shaffer
 	 */
-	public static function generateMetaData($content, $request)
+	public static function generateMetaData($content, $request, $page = null)
 	{
+		$meta = $page ? $page : new SeoPage();
 		$underride = sfConfig::get('app_csSEOToolkitPlugin_Underride');
-		$meta = new SeoPage();
+		// $meta = new SeoPage();
 		$meta->setUrl(self::parseUrl($request));
 		$meta->title = $underride['Title'] ? null : self::parseTitle($content);
 		$meta->description = $underride['Description'] ? null : self::parseDescription($content);

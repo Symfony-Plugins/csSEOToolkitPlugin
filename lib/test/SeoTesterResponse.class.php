@@ -9,4 +9,8 @@ class SeoTesterResponse extends sfTesterResponse
 	{
 		return $this->response->getStatusCode();
 	}
+	public function getWebResponseObject()
+	{
+		return $this->response;
+	}
 }

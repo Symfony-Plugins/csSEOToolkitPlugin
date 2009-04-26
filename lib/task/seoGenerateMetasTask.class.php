@@ -1,6 +1,6 @@
 <?php
 
-class seoRemove404Task extends sfBaseTask
+class seoGenerateMetasTask extends sfBaseTask
 {
   protected function configure()
   {
@@ -13,10 +13,10 @@ class seoRemove404Task extends sfBaseTask
     ));
 
     $this->namespace        = 'seo';
-    $this->name             = 'remove-404';
-    $this->briefDescription = 'removes all 404 pages being indexed in the SeoPage model';
+    $this->name             = 'generate-metas';
+    $this->briefDescription = 'rebuilds metas across the site, using configurations set in app.yml';
     $this->detailedDescription = <<<EOF
-This task removes 404 pages from the SeoPage Model.
+This task rebuilds your SEO metadata across the entire site, using the urls available.
 It requires an application argument.
 EOF;
   }
@@ -38,36 +38,38 @@ EOF;
 									
 		$browser = new SeoTestFunctional(new sfBrowser());
 					
-		$missingPages = array();
+		$updated = array();
+		$missing = array();
 		foreach ($pages as $page) 
 		{
 			$browser->loadUrl($page['url']);
-			if(!$browser->isValidUrl())
+			if($browser->isValidUrl($page['url']))
 			{
-				$missingPages[] = $page;
-				$this->logSection('seo', 'invalid page: "'.($page->getTitle() ? "title: $page->title" : "id: $page->id").'"');
-				// $final = $this->formatter->format('Removed one model: "'.$page->getTitle() . '"');
-    		// $this->dispatcher->notify(new sfEvent($this, 'command.log', array('', $final)));
+				$updated[] = SeoToolkit::generateMetaData($browser->getContent(), $browser->getWebRequestObject(), $page);
+			}
+			else
+			{
+				$missing[] = $page;
 			}
 		}
-		if (count($missingPages)) 
+		if (count($missing)) 
 		{
 			if(
-				!$this->askConfirmation(array('This command will remove '.count($missingPages).' pages from your database.', 'Are you sure you want to proceed? (y/N)'), null, false)
+				!$this->askConfirmation(array('You have '.count($missing).' pages in your database returning errors.  ', 'Would you like to remove these? (y/N)'), null, false)
 	    )
 	    {
-	      $this->logSection('seo', 'task aborted');
+	      $this->logSection('seo', 'task successful for '.count($updated). ' of '.count($updated)+count($missing). ' pages');
 	      return 1;
 	    }
-			foreach ($missingPages as $page) 
+			foreach ($missing as $page) 
 			{
 				$page->delete();
 			}
-			$this->logSection('seo', count($missingPages).' pages deleted successfully');
+			$this->logSection('seo', count($missing).' pages deleted successfully');
 		}
 		else
 		{
-			$this->logSection('seo', 'all your pages are valid');
+			$this->logSection('seo', 'all '.count($updated).' of your meta pages were updated successfully');
 		}
   }
 
