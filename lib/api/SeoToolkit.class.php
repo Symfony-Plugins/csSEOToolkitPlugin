@@ -36,6 +36,14 @@ class SeoToolkit
 		$meta->save();
 		return $meta;
 	}
+	public static function createMetaData($content)
+	{
+		$meta = array();
+		$meta['title'] = $underride['Title'] ? null : self::parseTitle($content);
+		$meta['description'] = $underride['Description'] ? null : self::parseDescription($content);
+		$meta['keywords'] = $underride['Keywords'] ? null : self::parseKeywords($content);
+		return $meta;
+	}
 	/**
 	 * getCurrentSeoPage
 	 * Used to pull current page from web request.  Standard across all actions, components, and models 

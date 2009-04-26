@@ -1,6 +1,6 @@
 <?php
 
-class seoRemove404Task extends sfBaseTask
+class seoRemove404Task extends seoBaseTask
 {
   protected function configure()
   {
@@ -10,6 +10,7 @@ class seoRemove404Task extends sfBaseTask
 
 	  $this->addOptions(array(
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'prod'),
+      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'executes task without confirmations'),
     ));
 
     $this->namespace        = 'seo';
@@ -45,25 +46,13 @@ EOF;
 			if(!$browser->isValidUrl())
 			{
 				$missingPages[] = $page;
-				$this->logSection('seo', 'invalid page: "'.($page->getTitle() ? "title: $page->title" : "id: $page->id").'"');
-				// $final = $this->formatter->format('Removed one model: "'.$page->getTitle() . '"');
-    		// $this->dispatcher->notify(new sfEvent($this, 'command.log', array('', $final)));
+
+				$this->logMessage('invalid page of url %s', $page->getUrl());
 			}
 		}
 		if (count($missingPages)) 
 		{
-			if(
-				!$this->askConfirmation(array('This command will remove '.count($missingPages).' pages from your database.', 'Are you sure you want to proceed? (y/N)'), null, false)
-	    )
-	    {
-	      $this->logSection('seo', 'task aborted');
-	      return 1;
-	    }
-			foreach ($missingPages as $page) 
-			{
-				$page->delete();
-			}
-			$this->logSection('seo', count($missingPages).' pages deleted successfully');
+			$this->removePages($missingPages, $options);
 		}
 		else
 		{

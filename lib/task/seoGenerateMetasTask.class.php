@@ -1,6 +1,6 @@
 <?php
 
-class seoGenerateMetasTask extends sfBaseTask
+class seoGenerateMetasTask extends seoBaseTask
 {
   protected function configure()
   {
@@ -12,6 +12,7 @@ class seoGenerateMetasTask extends sfBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'prod'),
       new sfCommandOption('id', null, sfCommandOption::PARAMETER_REQUIRED, 'A specific id to rebuild', null),
       new sfCommandOption('where', null, sfCommandOption::PARAMETER_REQUIRED, 'A where clause (equals signs must be replaced with the word "is")', null),
+      new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'executes task without confirmations'),
     ));
 
     $this->namespace        = 'seo';
@@ -53,7 +54,7 @@ EOF;
 			return 1;
 		}							
 		
-		$browser = new SeoTestFunctional(new sfBrowser());
+		$browser = new SeoTestFunctional(new SeoTaskBrowser());
 
 		$updated = array();
 		$missing = array();
@@ -62,34 +63,48 @@ EOF;
 			$browser->loadUrl($page['url']);
 			if($browser->isValidUrl($page['url']))
 			{
-				$updated[] = SeoToolkit::generateMetaData($browser->getContent(), $browser->getWebRequestObject(), $page);
+				$new = SeoToolkit::createMetaData($browser->getContent());
+				if ($page['title'] != $new['title'] || $page['description'] != $new['description'] || $page['keywords'] != $new['keywords']) 
+				{
+					$page->fromArray($new);
+					$update[] = $page;
+				}
 			}
 			else
 			{
 				$missing[] = $page;
 			}
 		}
-		if (count($missing)) 
+		$num_up = (int) count($update);
+		$num_miss = (int) count($missing);
+		$total = $pages->count();
+		
+		if ($num_up) 
 		{
 			if(
-				!$this->askConfirmation(array('You have '.count($missing).' pages in your database returning errors.  ', 'Would you like to remove these? (y/N)'), null, false)
-	    )
-	    {
-	      $this->logSection('seo', 'task successful for '.count($updated). ' of '.count($updated)+count($missing). ' pages');
-	      return 1;
-	    }
-			foreach ($missing as $page) 
+				!(isset($options['no-confirmation']) && $options['no-confirmation']) && 
+				!$this->askConfirmation(array('This command will update '.$num_up.' page(s) in your database.', 'Are you sure you want to proceed? (y/N)'), null, false)
+    	)
 			{
-				$page->delete();
+				$this->logSection('seo', 'task aborted');
+				return 1;
 			}
-			$this->logSection('seo', count($missing).' pages deleted successfully');
+			foreach ($update as $page) 
+			{
+				$page->save();
+			}
+			$this->logSection('seo', $num_up.' of '. $total.' were updated');
 		}
 		else
 		{
-			$this->logSection('seo', 'all '.count($updated).' of your meta pages were updated successfully');
+			$this->logSection('seo', 'All of your pages metas are up to date');
 		}
+		if ($num_miss) 
+		{
+			$this->removePages($missing, $options);
+		}
+		$this->logSection('seo', 'Task Complete');
   }
-
   protected function bootstrapSymfony($app, $env, $debug = true)
   {
     $configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, $debug);
