@@ -17,7 +17,7 @@ class SeoTestFunctional extends sfTestFunctional
 		if ($page = $this->get($this->url)) 
 		{
 			$status = $page->with('response')->getStatusCode();
-			return $status == 200 ? true : false;
+			return $status != 404 ? true : false;
 		}
 		return false;
 	}
