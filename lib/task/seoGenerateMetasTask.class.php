@@ -10,10 +10,12 @@ class seoGenerateMetasTask extends sfBaseTask
 
 	  $this->addOptions(array(
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'prod'),
+      new sfCommandOption('id', null, sfCommandOption::PARAMETER_REQUIRED, 'A specific id to rebuild', null),
+      new sfCommandOption('where', null, sfCommandOption::PARAMETER_REQUIRED, 'A where clause (equals signs must be replaced with the word "is")', null),
     ));
 
     $this->namespace        = 'seo';
-    $this->name             = 'generate-metas';
+    $this->name             = 'rebuild-metas';
     $this->briefDescription = 'rebuilds metas across the site, using configurations set in app.yml';
     $this->detailedDescription = <<<EOF
 This task rebuilds your SEO metadata across the entire site, using the urls available.
@@ -24,20 +26,35 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $app     = $arguments['application'];
-    $env     = $options['application'];
+    $env     = $options['env'];
 
 		$this->bootstrapSymfony($app, $env, true);
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase('doctrine')->getConnection();
 
-		$pages = Doctrine_Query::create()
+		$q = 	Doctrine_Query::create()
 								   ->select('*')
-									 ->from('SeoPage')
-									 ->execute();		
+									 ->from('SeoPage');
 									
+		if (isset($options['id'])) 
+		{
+			$pages = $q->addWhere('id = ?', $options['id']);
+		}
+		if (isset($options['where'])) 
+		{
+			$pages = $q->addWhere(str_replace('is', '=', $options['where']));
+		}
+		$pages = $q->execute();
+
+		if (!$pages->count() && isset($options['id'])) 
+		{
+			$this->logSection('seo', 'Page of id "'.$options['id'].'" not found.');
+			return 1;
+		}							
+		
 		$browser = new SeoTestFunctional(new sfBrowser());
-					
+
 		$updated = array();
 		$missing = array();
 		foreach ($pages as $page) 
