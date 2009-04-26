@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package packagerversion="1.4.6" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
- <name>csGlossaryPlugin</name>
+ <name>csSEOToolkitPlugin</name>
  <channel>pear.symfony-project.com</channel>
- <summary>Easily index and alphabetize a model or group of models </summary>
+ <summary>Plug-and-Play Search Engine Optomization </summary>
  <description>
-	Allows you to configure a model or group of models in your app.yml to be grouped alphabetically in glossary/directory format.
+	Provides helpers for you to improve your website's search engine optomization.
  </description>
  <lead>
   <name>Brent Shaffer</name>
@@ -64,7 +64,7 @@
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2009-04-24</date>
+   <date>2009-04-26</date>
    <license uri="http://www.symfony-project.org/license">MIT license</license>
    <notes>
    * Initial creation of plugin

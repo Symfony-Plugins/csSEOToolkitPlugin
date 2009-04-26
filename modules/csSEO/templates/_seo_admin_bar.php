@@ -71,7 +71,6 @@
 	<?php if (isset($sitemapform)): ?>
 	<li>
 		<div id='sitemap_form' style='display:none'>
-			<hr />
 			<?php use_helper('Form') ?>
 			<?php echo form_tag('@sitemap_xml_edit') ?>
 			<label style='clear:both;float:left'>Priority:</label>
