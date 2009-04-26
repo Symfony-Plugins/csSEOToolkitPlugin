@@ -1,5 +1,13 @@
 <?php
 // require_once dirname(__FILE__).'/../vendor/simplehtmldom/simple_html_dom.php';
+
+/**
+ * SeoKeywordToolkit
+ * Helper class for encoding / decorating content keywords
+ *
+ * @package default
+ * @author Brent Shaffer
+ */
 class SeoKeywordToolkit
 {
  	private static $instance;

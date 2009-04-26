@@ -1,73 +1,105 @@
-csGlossaryPlugin
-================
+csSEOToolkitPlugin
+==================
 
-Allows you to easily create a Glossary or Directory out of a single model or an aggregate of multiple models.  
-Models are organized alphabetically, and the alphabet is customizable.  
+Provides you with several tools to optimize your website for search engines
 
-#Configuration
+* Inline editing of metadata for authenticated users
+* Inline prioritizing of pages for your sitemap.xml
+* Ability to add site-wide "keywords" to your project, wrapped in "em" tags for emphesis
+* Friendly 404 error page with url-based search results for possible desired pages
 
-Add this to your app.yml with the models you want your glossary to use under default:
+Installation
+------------
+After installing the plugin, remember to run the task "./symfony plugin:publish-asset" to include the associated styles, scripts and images
+Secondly, include the csSEO module in your application via your *included_modules* setting in settings.yml
 
-	[yml]
-	all:
-		glossary:
-		default:
-			- MyModel1
-			- MyModel2
-	
-By Default, the csGallery class looks for a title field on the object.  If you wish for this to be different,
-alter your app.yml as follows:
-	
-	[yml]
-	all:
-		glossary:
-			default:
-				MyModel1:  title
-				MyModel2:	name
-	
-In this scenario, MyModel1 will be glossarized according to the title field, and MyModel2 will be glossarized 
-according to name.  Both models are automatically alphabetized together.  If you have multiple glossaries in 
-your project, simply declare a new glossary under default:
+MetaData
+--------
 
-	[yml]
-	all:
-		glossary:
-	  	default:
-	    	MyModel1:  title
-	    	MyModel2:	name
-			terms_glossary:
-				- Term
-
-Now your Term glossary can be called easily.  Read about 'Usage' below to manipulate your Glossary object
-
-
-#Usage
-
-First you must create your glossary object:
-	
-	[php]
-	$glossary = new Glossary();
-
-This will create a glossary with the default configurations you have specified.  In order to use additional
-configurations, simply pass the configuration name to the constructor:
+Include the Seo Helper in your layout:
 
 	[php]
-	$glossary = new Glossary('terms_glossary'); 	//This will apply the configuration shown in the example above
-
-You now have your glossary object to manipulate.
-
-#METHODS
-
-* **getActiveAlphabet()**
-	This function returns an array with all the letters that have results
-
-* **getForLetter(** *$letter* **)**
-	This function returns an array of objects in alphabetical order that match the given letter
+	<?php use_helper('Seo') ?>
 	
-* **getGlossaryCollection()**
-	This function returns a full alphabetical array with all results included and alphabetized
-	
-* **getAlphabet()**
-	This function returns the current alphabet in array form
+Use the seo helpers instead of include_metas():
 
-Please contact bshaffer@centresource.com with any comments or questions
+	[php]
+	<?php include_seo_metas($sf_content) ?>
+
+Pass $sf_content to this helper if you want it to auto-generate title, description, and keyword data for your page automatically.  This is **strongly recommended**.
+This function call should go above the include_title() method in your layout.  This will allow the SeoPage object to override the default if desired.
+
+To edit this data inline, add the admin bar helper method to your layout.php
+
+	[php]
+	<?php seo_admin_bar() ?>
+
+This bar is only available to authenticated users.  By default, the method called on the user class is **isAuthenticated()**.  However, to
+choose your own method, configure your app.yml:
+
+	[yml]
+	app:
+		csSEOToolkitPlugin:
+			AuthMethod:					myAuthMethod
+			
+This method will be called on your user class, and if true will display the SEO admin bar.  If you are using the sfDoctrineGuardPlugin, it is stongly recommended that you use the **isSuperAdmin** method for SEO Administration.
+
+The **auto-generated** metadata is pulled by looking for H1 tags for the titles, and paragraph, breaking, blockquote, and div tags for description.  Keywords are found by taking the top frequently used words found in the content of the page.
+Generated titles can be given a prefix.  For example, the content of H1 tags can be prepended to the name of your site like so:
+> My Site | My Generated Title
+
+In this case, the text "My Site | " would be configurable through your project's app.yml:
+
+	[yml]
+	app:
+		csSEOToolkitPlugin:
+			SitePrefix:					'My Site | ' 
+			
+If no H1 tag is found in the content, either the plugin can be configured to use the symfony-specified title, or a "default title" method can be applied.  There is no default currently available for titles/descriptions
+
+The SEO admin bar comes bundled with a stylesheet and javascripts for your convenience.  If these conflict with your site, you can remove them:
+
+
+	[yml]
+	app:
+		csSEOToolkitPlugin:
+			IncludeAssets:			off
+			
+Sitemap.xml
+-----------
+
+Your auto-generated sitemap.xml is always available by browsing directly to sitemap.xml in your web root:
+
+> http://myproject.localhost/index.php/sitemap.xml
+
+This information is configurable using the seo admin toolbar mentioned above.  The options for customization are priority (decimal percentage scale from 0-1) and changeFreq (options vary from always to never)
+It is also optional to remove an item from the sitemap.xml by clicking the checkbox labeled __Exclude from Sitemap__
+
+Keywords
+--------
+
+Any text placed within emphasis tags are weighed more heavily by search engine robots.  Because of this, the Keywords helper lets you add these tags to your text automatically.
+Add the following code in your layout using the SEO helper:
+
+	[php]
+	<?php echo keyword_encode($sf_content, 'p') ?>
+	
+This will process your page content (or whatever content passed to the helper) and wrap <*em*> tags around any keywords found.
+The helper takes a second optional parameter for a valid CSS selector.  This will tell the helper to only apply the tags to keywords found within the given selectors.
+It is currently recommended to only replace keywords within paragraph tags.
+Keywords are given the style 'keyword', and by default have no styling applied.  They only appear as within tags to the robots.
+ 
+Error404 Module
+---------------
+
+To implement the custom 404 module in your website, add the following code to your application's settings.yml:
+
+	[yml]
+	all:
+		.settings:
+	    error_404_module:       csSEO
+	    error_404_action:       error404
+
+That is all!  If you have a preferred algorithm for searching, override the module or write your own **getSearchQuery()** method for the SeoPageTable class.  
+
+*SeoPageTable*->**getSearchQuery()** accepts a single argument: an array of keywords to search. 	

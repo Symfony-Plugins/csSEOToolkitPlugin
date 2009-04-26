@@ -1,27 +1,47 @@
 <?php
 
 /**
-* 
-*/
+ * SeoToolkit
+ * Create / Manage Metadata and Sitemap
+ *
+ * @package default
+ * @author Brent Shaffer
+ */
 class SeoToolkit
 {
-	
 	public static $_split_tags = array('description' => array('</p>', '<br>', '<br />', '</blockquote>', '</div>'),
 																		 'title' => array('<h1>' => '</h1>'));
 	public static $_maxlen  = 255;
 	public static $_wordlen  = 4;
 	public static $_numkeywords  = 7;
 	
+	/**
+	 * generateMetaData
+	 * uses the page HTML to generate metadata
+	 * 
+	 * @param string $content - HTML page content 
+	 * @param string $request - sfWebRequest object
+	 * @return SeoPage object
+	 * @author Brent Shaffer
+	 */
 	public static function generateMetaData($content, $request)
 	{
 		$meta = new SeoPage();
 		$meta->setUrl($request->getUri());
-		$meta->setTitle(self::parseTitle($content, $request));
+		$meta->setTitle(self::parseTitle($content));
 		$meta->setDescription(self::parseDescription($content));
 		$meta->setKeywords(self::parseKeywords($content));
 		$meta->save();
 		return $meta;
 	}
+	/**
+	 * parseTitle
+	 * retrieves a default page title from the HTML content
+	 *
+	 * @param string $content - HTML content
+	 * @return string page title
+	 * @author Brent Shaffer
+	 */
 	private static function parseTitle($content, $request)
 	{
 		$title = '';
@@ -35,20 +55,27 @@ class SeoToolkit
 			}
 		}
 		$title = trim(strip_tags($title));
-		return substr($title ? self::getSitePrefix() . $title : self::getDefaultTitle($request), 0, 255);
+		return substr($title ? self::getSitePrefix() . $title : self::getDefaultTitle(), 0, 255);
 	}
 	
 	//This can be extended / overriden on a per-site basis
 	public static function getSitePrefix()
 	{
-		sfConfig::get('app_csSEOToolkitPlugin_SitePrefix');
+		return sfConfig::get('app_csSEOToolkitPlugin_SitePrefix');
 	}
 	
 	//This can be extended / overriden on a per-site basis
-	public static function getDefaultTitle($request)
+	public static function getDefaultTitle()
 	{
 		return 'Home';
 	}
+	/**
+	 * creates a meta description from a block of HTML
+	 *
+	 * @param string $content - HTML content
+	 * @return string for meta description
+	 * @author Brent Shaffer
+	 */
 	private static function parseDescription($content)
 	{
 		$summary = '';
@@ -64,6 +91,14 @@ class SeoToolkit
 		$summary = preg_replace('/\s+/', ' ', strip_tags($summary));	
 		return $summary;
 	}
+	/**
+	 * parseKeywords
+	 * creates metadata keywords from HTML content
+	 *
+	 * @param string $content - the HTML to create a keyword string from
+	 * @return string of keywords for metadata
+	 * @author Brent Shaffer
+	 */
 	private static function parseKeywords($content)
 	{
 		$words = self::prepForKeywords($content);
@@ -78,6 +113,14 @@ class SeoToolkit
 
 		return self::convertToKeywordString($weight);
 	}
+	/**
+	 * prepForKeywords
+	 * converts an HTML string into a word array
+	 *
+	 * @param string $text - the text to pull keywords from 
+	 * @return array of words found in the text
+	 * @author Brent Shaffer
+	 */
 	private static function prepForKeywords($text)
 	{
 		//keywords are not case sensitive, we don't want to include HTML tags
@@ -94,6 +137,13 @@ class SeoToolkit
 		
 		return $words;
 	}
+	/**
+	 * convertToKeywordString
+	 *
+	 * @param array $keywords - a unique array of keywords and their weight 
+	 * @return string of keywords for metadata
+	 * @author Brent Shaffer
+	 */
 	private static function convertToKeywordString($keywords)
 	{
 		//rank by most frequent

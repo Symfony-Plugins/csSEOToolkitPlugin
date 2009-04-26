@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SeoInflector
+ * Provides helpful functions for pulling summaries out of blocks of text
+ *
+ * @package default
+ * @author Brent Shaffer
+ */
 class SeoInflector
 {
 	public static $_split_tags = array('</p>', '<br>', '<br />', '</blockquote>', '</div>');

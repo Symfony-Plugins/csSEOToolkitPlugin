@@ -1,8 +1,12 @@
 <?php
-/**
-* Singleton wrapper for HTMLPurifier
-*/
 
+/**
+ * SeoPurifier
+ * Singleton wrapper for HTMLPurifier
+ *
+ * @package default
+ * @author Brent Shaffer
+ */
 class SeoPurifier
 {
   public $config;
