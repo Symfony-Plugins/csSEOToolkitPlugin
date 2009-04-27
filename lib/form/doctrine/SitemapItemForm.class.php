@@ -16,5 +16,6 @@ class SitemapItemForm extends PluginSeoPageForm
 		$this->hideFields(array('title', 'description', 'keywords'));
 		$this->widgetSchema['priority'] = new sfWidgetFormInput(array(), array('class' => 'value_display', 'onfocus' => 'blur(this);', 'id' => 'priority_slider'));
 		$this->widgetSchema->setLabel('priority', false);
+    $this->widgetSchema->setNameFormat('seo_page_sitemap_info[%s]');
 	}
 }

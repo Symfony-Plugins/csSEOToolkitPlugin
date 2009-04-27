@@ -4,7 +4,7 @@ class csSEOActions extends sfActions
 {
 	public function executeEditMetaData(sfWebRequest $request)
 	{
-		$data = $request->getParameter('seo_page');
+		$data = $request->getParameter('seo_page_meta_data');
 		$obj = Doctrine::getTable('SeoPage')->findOneById($data['id']);
 		$form = new SeoPageForm($obj);
 		$form->bind($data);
@@ -21,7 +21,9 @@ class csSEOActions extends sfActions
 	}
 	public function executeEditSitemapData(sfWebRequest $request)
 	{
-		$data = $request->getParameter('seo_page');
+
+		$data = $request->getParameter('seo_page_sitemap_info');
+				// exit(print_r($data));
 		$obj = Doctrine::getTable('SeoPage')->findOneById($data['id']);
 		$form = new SeoPageForm($obj);
 		$form->bind($data);

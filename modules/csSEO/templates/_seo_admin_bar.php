@@ -87,6 +87,11 @@
 			<?php echo $sitemapform['changeFreq']->renderRow() ?>
 			<?php echo $sitemapform['exclude_from_sitemap'] ?>
 			<?php echo $sitemapform['exclude_from_sitemap']->renderLabel() ?>
+			<?php echo $sitemapform['id'] ?>
+			<?php echo $sitemapform['url'] ?>
+			<?php echo $sitemapform['title'] ?>			
+			<?php echo $sitemapform['description'] ?>			
+			<?php echo $sitemapform['keywords'] ?>			
 			<?php echo submit_tag('Submit') ?>
 			</form>
 		</div>

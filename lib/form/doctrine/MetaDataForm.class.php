@@ -14,5 +14,6 @@ class MetaDataForm extends PluginSeoPageForm
 		parent::setUp();
 		unset($this['created_at'], $this['updated_at']);
 		$this->hideFields(array('priority', 'changeFreq', 'exclude_from_sitemap'));
+    $this->widgetSchema->setNameFormat('seo_page_meta_data[%s]');
 	}
 }
