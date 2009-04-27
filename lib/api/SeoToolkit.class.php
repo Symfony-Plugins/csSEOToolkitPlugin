@@ -30,18 +30,18 @@ class SeoToolkit
 		$underride = sfConfig::get('app_csSEOToolkitPlugin_Underride');
 		// $meta = new SeoPage();
 		$meta->setUrl(self::parseUrl($request));
-		$meta->title = $underride['Title'] ? null : self::parseTitle($content);
-		$meta->description = $underride['Description'] ? null : self::parseDescription($content);
-		$meta->keywords = $underride['Keywords'] ? null : self::parseKeywords($content);
+		$meta->title = $underride['Title'] ? null : (string) self::parseTitle($content);
+		$meta->description = $underride['Description'] ? null : (string) self::parseDescription($content);
+		$meta->keywords = $underride['Keywords'] ? null : (string) self::parseKeywords($content);
 		$meta->save();
 		return $meta;
 	}
 	public static function createMetaData($content)
 	{
 		$meta = array();
-		$meta['title'] = $underride['Title'] ? null : self::parseTitle($content);
-		$meta['description'] = $underride['Description'] ? null : self::parseDescription($content);
-		$meta['keywords'] = $underride['Keywords'] ? null : self::parseKeywords($content);
+		$meta['title'] = $underride['Title'] ? (string) null : self::parseTitle($content);
+		$meta['description'] = $underride['Description'] ? (string) null : self::parseDescription($content);
+		$meta['keywords'] = $underride['Keywords'] ? (string) null : self::parseKeywords($content);
 		return $meta;
 	}
 	/**
