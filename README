@@ -11,7 +11,7 @@ Provides you with several tools to optimize your website for search engines
 Installation
 ------------
 After installing the plugin, remember to run the task "./symfony plugin:publish-asset" to include the associated styles, scripts and images.
-Secondly, include the csSEO module in your application via your *included_modules* setting in settings.yml
+Secondly, include the csSEO module in your application via your *enabled_modules* setting in settings.yml
 
 MetaData
 --------
