@@ -16,7 +16,7 @@
 					<?php echo link_to($result['title'], $result['url']) ?>
 				</h6>
 				<p>
-					<?php $result['description'] ?>
+					<?php echo $result['description'] ?>
 				</p>
 			</li>
 		<?php endforeach ?>	
