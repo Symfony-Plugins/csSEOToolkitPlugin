@@ -20,5 +20,5 @@
 				</p>
 			</li>
 		<?php endforeach ?>	
-	</div>
+	</ol>
 <?php endif; ?>
