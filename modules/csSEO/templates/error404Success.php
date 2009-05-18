@@ -9,16 +9,16 @@
 	<div class="searchresults">
 	  <h2>Could you possibly have meant one of these pages?</h2>		
 	</div>
-	<div class='search_container'>
+	<ol class='search_container'>
 		<?php foreach ($results as $result): ?>
-			<div class='joblisting'> 	
-				<h2>
+			<li> 	
+				<h3>
 					<?php echo link_to($result['title'], $result['url']) ?>
-				</h2>
-				<div class='textwrap'>
-					<?php echo $result['description'] ?>
-				</div>
-			</div>
+				</h3>
+				<p>
+					<?php $result['description'] ?>
+				</p>
+			</li>
 		<?php endforeach ?>	
 	</div>
 <?php endif; ?>
