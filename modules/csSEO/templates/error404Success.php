@@ -12,9 +12,9 @@
 	<ol class='search_container'>
 		<?php foreach ($results as $result): ?>
 			<li> 	
-				<h3>
+				<h6>
 					<?php echo link_to($result['title'], $result['url']) ?>
-				</h3>
+				</h6>
 				<p>
 					<?php $result['description'] ?>
 				</p>
