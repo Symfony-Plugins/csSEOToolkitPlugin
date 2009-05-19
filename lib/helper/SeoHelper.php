@@ -35,6 +35,7 @@ function ie6_update()
 	// 	$response->addJavascript('/csSeoToolkitPlugin/js/ie6update.js', 'last', array('condition' => 'lte IE 6'));
 	// 	$response->addJavascript('/csSeoToolkitPlugin/js/ie6update_options.js', 'last', array('condition' => 'lte IE 6'));
 	// }
+	use_helper('Javascript');
 	echo "<!--[if lte IE 6]>";
 	javascript_tag();
 	echo <<<EOF
