@@ -26,6 +26,17 @@ function include_seo_metas($content)
 	echo get_component('csSEO', 'meta_data', array('sf_content' => $content));
 }
 
+function ie6_update()
+{
+	if (sfContext::hasInstance()) 
+	{
+		$response = sfContext::getInstance()->getResponse();
+		$response->addJavascript('http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js', 'last', array('condition' => 'lte IE 6'));
+		$response->addJavascript('/csSeoToolkitPlugin/js/ie6update.js', 'last', array('condition' => 'lte IE 6'));
+		$response->addJavascript('/csSeoToolkitPlugin/js/ie6update_options.js', 'last', array('condition' => 'lte IE 6'));
+	}
+}
+
 /**
  * seo_admin_bar
  *
@@ -42,4 +53,9 @@ function seo_admin_bar()
 	{
 		include_component('csSEO', 'seo_admin_bar');
 	}
+}
+
+function link_to_nofollow($name, $url, $options)
+{
+	return link_to($name, $url, array_merge(array('rel' => 'nofollow'), $options));
 }
