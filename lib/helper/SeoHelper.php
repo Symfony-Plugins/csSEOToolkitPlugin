@@ -28,13 +28,6 @@ function include_seo_metas($content)
 
 function ie6_update()
 {
-	// if (sfContext::hasInstance()) 
-	// {
-	// 	$response = sfContext::getInstance()->getResponse();
-	// 	$response->addJavascript('http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js', 'last', array('condition' => 'lte IE 6'));
-	// 	$response->addJavascript('/csSeoToolkitPlugin/js/ie6update.js', 'last', array('condition' => 'lte IE 6'));
-	// 	$response->addJavascript('/csSeoToolkitPlugin/js/ie6update_options.js', 'last', array('condition' => 'lte IE 6'));
-	// }
 	use_helper('Javascript');
 	echo "<!--[if lte IE 6]>";
 	javascript_tag();
