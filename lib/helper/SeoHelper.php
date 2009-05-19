@@ -28,13 +28,25 @@ function include_seo_metas($content)
 
 function ie6_update()
 {
-	if (sfContext::hasInstance()) 
-	{
-		$response = sfContext::getInstance()->getResponse();
-		$response->addJavascript('http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js', 'last', array('condition' => 'lte IE 6'));
-		$response->addJavascript('/csSeoToolkitPlugin/js/ie6update.js', 'last', array('condition' => 'lte IE 6'));
-		$response->addJavascript('/csSeoToolkitPlugin/js/ie6update_options.js', 'last', array('condition' => 'lte IE 6'));
-	}
+	// if (sfContext::hasInstance()) 
+	// {
+	// 	$response = sfContext::getInstance()->getResponse();
+	// 	$response->addJavascript('http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js', 'last', array('condition' => 'lte IE 6'));
+	// 	$response->addJavascript('/csSeoToolkitPlugin/js/ie6update.js', 'last', array('condition' => 'lte IE 6'));
+	// 	$response->addJavascript('/csSeoToolkitPlugin/js/ie6update_options.js', 'last', array('condition' => 'lte IE 6'));
+	// }
+	echo "<!--[if lte IE 6]>";
+	javascript_tag();
+	echo <<<EOF
+		/*Load jQuery if not already loaded*/ if(typeof jQuery == 'undefined'){ document.write("<script type=\"text/javascript\"   src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></"+"script>"); var __noconflict = true; } 
+			var IE6UPDATE_OPTIONS = {
+				icons_path: "http://static.ie6update.com/hosted/ie6update/images/"
+			}
+		</script>
+		<script type="text/javascript" src="http://static.ie6update.com/hosted/ie6update/ie6update.js">
+EOF;
+	end_javascript_tag();
+	echo "<![endif]-->";	
 }
 
 /**
