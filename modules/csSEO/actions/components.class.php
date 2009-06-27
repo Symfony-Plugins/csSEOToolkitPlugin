@@ -59,6 +59,7 @@ class csSEOComponents extends sfComponents
 		}
 		$this->metaform = new MetaDataForm($this->page);
 		$this->sitemapform = new SitemapItemForm($this->page);
+		$this->validated = $this->validatedUser();
 	}
 	/**
 	 * validatedUser

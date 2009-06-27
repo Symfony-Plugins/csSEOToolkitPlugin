@@ -11,7 +11,7 @@
  */
 function keyword_encode($content, $selector = null)
 {
-	return SeoKeywordToolkit::getInstance()->parseBlock($content, $selector);
+  return SeoKeywordToolkit::getInstance()->parseBlock($content, $selector);
 }
 
 /**
@@ -23,24 +23,24 @@ function keyword_encode($content, $selector = null)
  */
 function include_seo_metas($content)
 {
-	echo get_component('csSEO', 'meta_data', array('sf_content' => $content));
+  echo get_component('csSEO', 'meta_data', array('sf_content' => $content));
 }
 
 function ie6_update()
 {
-	use_helper('Javascript');
-	echo "<!--[if lte IE 6]>";
-	javascript_tag();
-	echo <<<EOF
-		/*Load jQuery if not already loaded*/ if(typeof jQuery == 'undefined'){ document.write("<script type=\"text/javascript\"   src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></"+"script>"); var __noconflict = true; } 
-			var IE6UPDATE_OPTIONS = {
-				icons_path: "http://static.ie6update.com/hosted/ie6update/images/"
-			}
-		</script>
-		<script type="text/javascript" src="http://static.ie6update.com/hosted/ie6update/ie6update.js">
+  use_helper('Javascript');
+  echo "<!--[if lte IE 6]>";
+  javascript_tag();
+  echo <<<EOF
+    /*Load jQuery if not already loaded*/ if(typeof jQuery == 'undefined'){ document.write("<script type=\"text/javascript\"   src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></"+"script>"); var __noconflict = true; } 
+      var IE6UPDATE_OPTIONS = {
+        icons_path: "http://static.ie6update.com/hosted/ie6update/images/"
+      }
+    </script>
+    <script type="text/javascript" src="http://static.ie6update.com/hosted/ie6update/ie6update.js">
 EOF;
-	end_javascript_tag();
-	echo "<![endif]-->";	
+  end_javascript_tag();
+  echo "<![endif]-->";  
 }
 
 /**
@@ -51,17 +51,17 @@ EOF;
  */
 function seo_admin_bar()
 {
-	if(has_slot('seo_admin_bar'))
-	{
-		include_slot('seo_admin_bar');
-	}
-	else
-	{
-		include_component('csSEO', 'seo_admin_bar');
-	}
+  if(has_slot('seo_admin_bar'))
+  {
+    include_slot('seo_admin_bar');
+  }
+  else
+  {
+    include_component('csSEO', 'seo_admin_bar');
+  }
 }
 
 function link_to_nofollow($name, $url, $options)
 {
-	return link_to($name, $url, array_merge(array('rel' => 'nofollow'), $options));
+  return link_to($name, $url, array_merge(array('rel' => 'nofollow'), $options));
 }
