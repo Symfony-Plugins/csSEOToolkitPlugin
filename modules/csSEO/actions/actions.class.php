@@ -17,7 +17,7 @@ class csSEOActions extends sfActions
 		{
 			$this->getUser()->setFlash('notice', 'Error: Meta Data for this page has not updated');			
 		}
-		$this->redirect($obj['absolute_url']);
+		$this->redirect($request->getReferer());
 	}
 	public function executeEditSitemapData(sfWebRequest $request)
 	{
@@ -36,7 +36,7 @@ class csSEOActions extends sfActions
 		{
 			$this->getUser()->setFlash('notice', 'Error: Sitemap.xml Data for this page has not updated');			
 		}
-		$this->redirect($obj['absolute_url']);
+		$this->redirect($request->getReferer());
 	}
 
  // ===========
